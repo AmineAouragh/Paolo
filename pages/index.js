@@ -1,115 +1,105 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image"
+import Link from "next/link"
+import Head from "next/head"
+import { useState, useEffect } from "react"
+import { Boldonse, Poppins } from 'next/font/google'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const boldonse = Boldonse({
+    subsets: ['latin'],
+    weight: '400',
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: '300'
+})
+
+const poppinsBold = Poppins({
+  subsets: ['latin'],
+  weight: '200'
+})
 
 export default function Home() {
+
+  const placeholders = [
+    "A SaaS that helps creators turn long videos into short clips...",
+    "A tool that helps small businesses manage inventory across stores...",
+    "An app that helps students summarize lectures instantly...",
+    "A platform that helps freelancers find high-quality clients..."
+  ]
+
+  const [text, setText] = useState("")
+  const [index, setIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const [idea, setIdea] = useState("")
+
+  useEffect(() => {
+    const current = placeholders[index]
+    let speed = isDeleting ? 40 : 70
+
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        setText(current.substring(0, text.length + 1))
+        if (text === current) {
+          setTimeout(() => setIsDeleting(true), 1200) // pause before deleting
+        }
+      } else {
+        setText(current.substring(0, text.length - 1))
+        if (text === "") {
+          setIsDeleting(false)
+          setIndex((prev) => (prev + 1) % placeholders.length)
+        }
+      }
+    }, speed);
+
+    return () => clearTimeout(timeout)
+  }, [text, isDeleting, index])
+  
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <>
+      <Head>
+        <title>Paolo - Research Your Competitors In Minutes, Not Days</title>
+      </Head>
+      <div className="bg-[#060620] flex flex-col justify-center items-center min-h-screen w-full">
+          <div id="topnav" className="hidden w-full py-6 px-6 flex flex-row items-center justify-between">
+            <p className="font-bold text-white text-3xl">Paolo</p>
+            <ul id="navlist" className="hidden flex flex-row items-center">
+              <li className="mr-6 text-2xl text-white">How it works</li>
+              <li className="mr-6 text-2xl text-white">Pricing</li>
+              <li className="mr-6 text-2xl text-white">Sign in</li>
+              <button type="button" className="px-8 py-4 bg-[#F6DC3B] rounded-lg text-2xl">Validate your idea</button>
+            </ul>
+          </div>
+          <div id="hero_section" className="w-full py-20 flex flex-col justify-center items-center">
+            <div className="py-20 flex flex-col justify-center items-center w-full sm:w-3/4 md:w-2/3 xl:w-1/2">
+              <h2 className={`mb-8 text-xl text-white ${boldonse.className}`}>Paolo</h2>
+              <h1 className={`text-center text-white text-5xl ${boldonse.className} leading-[92px]`}>Research Your Competitors In Minutes, Not Days</h1>
+              <p className={`${poppinsBold.className} text-center text-white mt-10 text-xl`}>Just describe your app idea and Paolo takes care of the rest.</p>
+              <div className="w-3/4 flex flex-col border-2 border-[#F6DC3B] shadow-lg shadow-[#F6DC3B] rounded-lg mt-10">
+                <textarea 
+                  id="input_field" 
+                  placeholder={text} 
+                  onFocus={() => setText("")}
+                  rows={4} 
+                  cols={20}
+                  value={idea}
+                  onChange={(e) => setIdea(e.target.value)} 
+                  className={`${poppins.className} placeholder-gray-300 text-2xl text-[#F6DC3B] w-full focus:outline-none p-4`}>
+
+                </textarea>
+                <div className="p-4 flex flex-row items-center justify-between">
+                  <div>
+
+                  </div>
+                  <button type="button" className="bg-[#F6DC3B] p-4 rounded-lg text-xl font-bold">
+                    Send
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div> 
+    </>
   );
 }
